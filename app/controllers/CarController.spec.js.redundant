@@ -1,0 +1,99 @@
+/* eslint-disable no-undef */
+const { Car } = require("../models");
+const CarController = require("./CarController");
+
+describe("CarController", () => {
+    /*
+  describe("#handleListCars", () => {
+    it("should call res.status(200) and res.json with list of cars data", async () => {
+      // const name = "Hello";
+      // const prompt = "World";
+
+      // const mockCar = new Car({ name, prompt });
+      const mockCarModel = {};
+      mockCarModel.findAll = jest.fn().mockReturnThis();
+
+      const mockRequest = {
+        query: {
+          page: 1,
+          pageSize: 5,
+        },
+      };
+
+      const mockResponse = {};
+      mockResponse.status = jest.fn().mockReturnThis();
+      mockResponse.json = jest.fn().mockReturnThis();
+
+      const carController = new CarController({ carModel: mockCarModel });
+      await carController.handleListCars(mockRequest, mockResponse);
+
+      expect(mockCarModel.findAll).toHaveBeenCalledWith();
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.json).toHaveBeenCalledWith(mockTask);
+    });
+  });
+  */
+  
+  describe("#handleGetCar", () => {
+    it("should call res.status(200) and res.json with car's instance", async () => {
+      const name = "Mobile Command Center";
+      const price = 5000000;
+      const size = "LARGE";
+      const image = "https://source.unsplash.com/519x519";
+      const isCurrentlyRented = false;
+      const createdAt = "2022-06-06T13:12:10.734Z";
+      const updatedAt = "2022-06-06T13:12:10.734Z";
+      const userCar = null;
+
+      const mockRequest = {
+        params: {
+          id: 98,
+        },
+      };
+
+      const mockCar = new Car({ name, price, size, image, isCurrentlyRented, createdAt, updatedAt, userCar });
+      const mockCarModel = {};
+      mockCarModel.findByPk = jest.fn().mockReturnValue(mockCar);
+
+      const mockResponse = {};
+      mockResponse.status = jest.fn().mockReturnThis();
+      mockResponse.json = jest.fn().mockReturnThis();
+
+      const carController = new CarController({ carModel: mockCarModel });
+      await carController.handleGetTask(mockRequest, mockResponse);
+
+      expect(mockCarModel.findByPk).toHaveBeenCalledWith(98);
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.json).toHaveBeenCalledWith(mockCar);
+    });
+
+    it("should call res.status(404) and res.json with error instance", async () => {
+      const err = new Error("Not found!");
+
+      const mockRequest = {
+        params: {
+          id: 98,
+        },
+      };
+
+      const mockCarModel = {};
+      mockCarModel.findByPk = jest.fn(() => Promise.reject(err));
+
+      const mockResponse = {};
+      mockResponse.status = jest.fn().mockReturnThis();
+      mockResponse.json = jest.fn().mockReturnThis();
+
+      const carController = new CarController({ carModel: mockCarModel });
+      await carController.handleGetCar(mockRequest, mockResponse);
+
+      expect(mockCarModel.findByPk).toHaveBeenCalledWith(98);
+      expect(mockResponse.status).toHaveBeenCalledWith(404);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        error: {
+          name: err.name,
+          message: err.message,
+        },
+      });
+    });
+  });
+});
