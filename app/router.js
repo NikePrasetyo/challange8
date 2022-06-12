@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken");
 const dayjs = require("dayjs");
 const bcrypt = require("bcryptjs");
+require("dotenv").config()
 
 const {
   ApplicationController,
@@ -30,16 +31,16 @@ function apply(app) {
 
   app.get("/", applicationController.handleGetRoot);
 
-  app.get("/v1/cars", carController.handleListCars);
-  app.post("/v1/cars", authenticationController.authorize(accessControl.ADMIN), carController.handleCreateCar);
-  app.post("/v1/cars/:id/rent", authenticationController.authorize(accessControl.CUSTOMER), carController.handleRentCar);
-  app.get("/v1/cars/:id", carController.handleGetCar);
-  app.put("/v1/cars/:id", authenticationController.authorize(accessControl.ADMIN), carController.handleUpdateCar);
-  app.delete("/v1/cars/:id", authenticationController.authorize(accessControl.ADMIN), carController.handleDeleteCar);
+  app.get(process.env.LIST_CARS, carController.handleListCars);
+  app.post(process.env.CREATE_CAR, authenticationController.authorize(accessControl.ADMIN), carController.handleCreateCar);
+  app.post(process.env.RENT_CAR, authenticationController.authorize(accessControl.CUSTOMER), carController.handleRentCar);
+  app.get(process.env.GET_CAR, carController.handleGetCar);
+  app.put(process.env.UPDATE_CAR, authenticationController.authorize(accessControl.ADMIN), carController.handleUpdateCar);
+  app.delete(process.env.DELETE_CAR, authenticationController.authorize(accessControl.ADMIN), carController.handleDeleteCar);
 
-  app.post("/v1/auth/login", authenticationController.handleLogin);
-  app.post("/v1/auth/register", authenticationController.handleRegister);
-  app.get("/v1/auth/whoami", authenticationController.authorize(accessControl.CUSTOMER), authenticationController.handleGetUser);
+  app.post(process.env.LOGIN, authenticationController.handleLogin);
+  app.post(process.env.REGISTER, authenticationController.handleRegister);
+  app.get(process.env.GET_USER, authenticationController.authorize(accessControl.CUSTOMER), authenticationController.handleGetUser);
 
   app.use(applicationController.handleNotFound);
   app.use(applicationController.handleError);
