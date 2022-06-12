@@ -11,7 +11,8 @@
     "db:migrate": "sequelize db:migrate",
     "db:seed": "sequelize db:seed:undo:all && sequelize db:seed:all",
     "eslint": "eslint .",
-    "test": "jest"
+    "test": "jest",
+    "build": "npm run db:migrate && npm run db:seed"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
